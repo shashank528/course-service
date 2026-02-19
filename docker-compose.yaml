@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: docker-course
+    ports:
+      - "3307:3306"
+
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: course-service-app:1.0
+    depends_on:
+      - mysql-db
+    ports:
+      - "9090:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/docker-course
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
